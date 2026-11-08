@@ -1,0 +1,14 @@
+{
+  "name": "gas-webapp-kit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "GASのWebアプリを、AIと話しながら作って公開するためのキット（キット自体の開発用）",
+  "scripts": {
+    "sync": "node tools/sync-shared.mjs",
+    "check": "node tools/sync-shared.mjs --check && node tools/check.mjs",
+    "test:template": "node tools/test-template.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "google-workspace-developer": {
+      "type": "http",
+      "url": "https://workspace-developer.goog/mcp"
+    }
+  }
+}

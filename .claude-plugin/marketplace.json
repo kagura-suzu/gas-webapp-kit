@@ -1,0 +1,16 @@
+{
+  "name": "gas-webapp-kit",
+  "description": "GASのWebアプリを、AIと話しながら作って公開するためのキット",
+  "owner": {
+    "name": "株式会社神楽鈴"
+  },
+  "plugins": [
+    {
+      "name": "gas-webapp",
+      "description": "Google Apps Script（GAS）のWebアプリを、話しかけるだけで作り、確かめ、公開まで進めるためのSkill集",
+      "version": "0.1.0",
+      "source": "./plugins/gas-webapp",
+      "category": "development"
+    }
+  ]
+}

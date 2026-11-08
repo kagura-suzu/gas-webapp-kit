@@ -1,0 +1,132 @@
+<script>
+  (function () {
+    const $ = (id) => document.getElementById(id);
+
+    /** google.script.run を Promise で呼ぶ */
+    function call(fn, ...args) {
+      return new Promise((resolve, reject) => {
+        google.script.run.withSuccessHandler(resolve).withFailureHandler(reject)[fn](...args);
+      });
+    }
+
+    function setStatus(id, text, kind) {
+      const el = $(id);
+      el.textContent = text;
+      el.className = 'status' + (kind ? ' ' + kind : '');
+    }
+
+    async function loadRecords() {
+      setStatus('list-status', '読み込み中…');
+      try {
+        const result = await call('getRecords');
+        if (!result || !Array.isArray(result.rows)) throw new Error('一覧の形が正しくありません');
+        renderRecords(result.rows);
+        return result;
+      } catch (err) {
+        $('records').hidden = true;
+        setStatus('list-status', '一覧を読み込めませんでした。少し待ってから「更新」を押してください。', 'error');
+        throw err;
+      }
+    }
+
+    function renderRecords(rows) {
+      const tbody = $('records').querySelector('tbody');
+      tbody.replaceChildren();
+      rows.forEach((row) => {
+        const tr = document.createElement('tr');
+        [['date', row.date], ['content', row.content], ['person', row.person]].forEach(([cls, value]) => {
+          const td = document.createElement('td');
+          td.className = cls;
+          td.textContent = value;
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+      $('records').hidden = rows.length === 0;
+      setStatus('list-status', rows.length === 0 ? 'まだ記録はありません。左の欄から追加できます。' : rows.length + '件を表示しています。');
+    }
+
+    function showFieldErrors(errors) {
+      ['content', 'person'].forEach((name) => {
+        const message = (errors && errors[name]) || '';
+        $(name + '-error').textContent = message;
+        $(name).setAttribute('aria-invalid', message ? 'true' : 'false');
+      });
+    }
+
+    async function onSubmit(event) {
+      event.preventDefault();
+      const input = { content: $('content').value, person: $('person').value };
+      $('submit').disabled = true;
+      setStatus('form-status', '追加しています…');
+      try {
+        const result = await call('addRecord', input);
+        if (!result.ok) {
+          showFieldErrors(result.errors);
+          setStatus('form-status', '入力内容を確かめてください。', 'error');
+          return;
+        }
+        showFieldErrors({});
+        $('content').value = '';
+        setStatus('form-status', '追加しました。', 'ok');
+        await loadRecords();
+      } catch (err) {
+        setStatus('form-status', '追加できませんでした。少し待ってからもう一度お試しください。', 'error');
+      } finally {
+        $('submit').disabled = false;
+      }
+    }
+
+    /** 確認用の画面の自己テスト。結果を一番外側のURLの #selftest=... に書く */
+    async function runSelftest() {
+      const panel = $('selftest-panel');
+      panel.hidden = false;
+      const results = [];
+      const add = (name, ok, detail) => results.push({ name, ok: Boolean(ok), detail: detail || '' });
+
+      ['record-form', 'content', 'person', 'submit', 'records', 'reload', 'list-status'].forEach((id) => {
+        add('画面の部品 ' + id, Boolean($(id)));
+      });
+      try {
+        const server = await call('runServerSelftest');
+        if (server.reason === 'not-allowed') add('サーバーの自己テストの許可', false, 'not-allowed');
+        (server.checks || []).forEach((c) => add('サーバー: ' + c.name, c.ok, c.detail));
+      } catch (err) {
+        add('サーバーの呼び出し', false, err && err.message);
+      }
+      try {
+        const list = await loadRecords();
+        add('一覧の表示', true, list.rows.length + '件');
+      } catch (err) {
+        add('一覧の表示', false, err && err.message);
+      }
+
+      const failed = results.filter((r) => !r.ok).length;
+      const passed = results.length - failed;
+      const code = (failed === 0 ? 'pass' : 'fail') + '-' + passed + '-' + failed;
+      panel.className = 'selftest ' + (failed === 0 ? 'pass' : 'fail');
+      $('selftest-title').textContent = failed === 0
+        ? '自己テスト：すべて成功（' + passed + '件）'
+        : '自己テスト：' + failed + '件の失敗があります';
+      const list = $('selftest-list');
+      list.replaceChildren();
+      results.forEach((r) => {
+        if (failed > 0 && r.ok) return;
+        const li = document.createElement('li');
+        li.className = r.ok ? 'ok' : 'ng';
+        li.textContent = (r.ok ? '成功 ' : '失敗 ') + r.name + (r.detail ? '（' + r.detail + '）' : '');
+        list.appendChild(li);
+      });
+      google.script.history.replace(null, { selftest: '1' }, 'selftest=' + code);
+    }
+
+    $('record-form').addEventListener('submit', onSubmit);
+    $('reload').addEventListener('click', () => loadRecords().catch(() => {}));
+
+    if (SELFTEST) {
+      runSelftest();
+    } else {
+      loadRecords().catch(() => {});
+    }
+  })();
+</script>

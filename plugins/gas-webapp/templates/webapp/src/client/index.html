@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <base target="_top">
+    <meta charset="utf-8">
+    <?!= include('client/css'); ?>
+  </head>
+  <body>
+    <header class="app-header">
+      <h1><?= appName ?></h1>
+    </header>
+    <main class="layout">
+      <section id="selftest-panel" class="selftest" hidden aria-live="polite">
+        <h2 id="selftest-title">自己テストを実行しています…</h2>
+        <ul id="selftest-list"></ul>
+      </section>
+
+      <section class="panel" aria-labelledby="form-title">
+        <div class="panel-head">
+          <h2 id="form-title">記録を追加</h2>
+        </div>
+        <form id="record-form" novalidate>
+          <div class="field">
+            <label for="content">内容 <span class="required">必須</span></label>
+            <textarea id="content" name="content" rows="3" maxlength="500" aria-describedby="content-error"></textarea>
+            <p class="field-error" id="content-error"></p>
+          </div>
+          <div class="field">
+            <label for="person">担当</label>
+            <input id="person" name="person" type="text" maxlength="50" autocomplete="name" aria-describedby="person-error">
+            <p class="field-error" id="person-error"></p>
+          </div>
+          <div class="actions">
+            <button id="submit" type="submit" class="primary">追加する</button>
+            <p id="form-status" class="status" role="status"></p>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel" aria-labelledby="list-title">
+        <div class="panel-head">
+          <h2 id="list-title">最近の記録</h2>
+          <button id="reload" type="button" class="secondary">更新</button>
+        </div>
+        <p id="list-status" class="status" role="status">読み込み中…</p>
+        <table id="records" class="records" hidden>
+          <thead>
+            <tr><th scope="col">日時</th><th scope="col">内容</th><th scope="col">担当</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+    </main>
+    <script>const SELFTEST = <?!= JSON.stringify(Boolean(selftest)) ?>;</script>
+    <?!= include('client/js'); ?>
+  </body>
+</html>

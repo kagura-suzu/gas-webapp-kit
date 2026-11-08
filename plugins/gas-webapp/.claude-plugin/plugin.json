@@ -1,0 +1,19 @@
+{
+  "name": "gas-webapp",
+  "version": "0.1.0",
+  "description": "Google Apps Script（GAS）のWebアプリを、話しかけるだけで作り、確かめ、公開まで進めるためのSkill集。初めての方向けに、ログインなどの操作をアプリ内ブラウザで1つずつ案内します。",
+  "author": {
+    "name": "株式会社神楽鈴"
+  },
+  "homepage": "https://github.com/kagura-suzu/gas-webapp-kit",
+  "repository": "https://github.com/kagura-suzu/gas-webapp-kit",
+  "license": "MIT",
+  "keywords": [
+    "google-apps-script",
+    "gas",
+    "clasp",
+    "webapp",
+    "spreadsheet"
+  ],
+  "mcpServers": "./.mcp.json"
+}

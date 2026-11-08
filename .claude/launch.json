@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "template-preview",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["plugins/gas-webapp/templates/webapp/preview/server.mjs"],
+      "port": 8787
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "gas-webapp-kit",
+  "interface": {
+    "displayName": "GAS Webアプリ開発キット"
+  },
+  "plugins": [
+    {
+      "name": "gas-webapp",
+      "source": {
+        "source": "local",
+        "path": "./plugins/gas-webapp"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

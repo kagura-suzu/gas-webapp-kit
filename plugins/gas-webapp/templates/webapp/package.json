@@ -1,0 +1,21 @@
+{
+  "name": "gas-webapp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "GASのWebアプリ（gas-webapp-kit の雛形から作成）",
+  "scripts": {
+    "test": "vitest run",
+    "preview": "node preview/server.mjs",
+    "create": "node scripts/create.mjs",
+    "push": "node scripts/push.mjs",
+    "urls": "node scripts/urls.mjs",
+    "release": "node scripts/release.mjs"
+  },
+  "devDependencies": {
+    "@google/clasp": "3.4.1",
+    "vitest": "4.1.12"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "gas-webapp",
+  "version": "0.1.0",
+  "description": "Google Apps Script（GAS）のWebアプリを、話しかけるだけで作り、確かめ、公開まで進めるためのSkill集。初めての方向けに、ログインなどの操作をアプリ内ブラウザで1つずつ案内します。",
+  "author": {
+    "name": "株式会社神楽鈴"
+  },
+  "homepage": "https://github.com/kagura-suzu/gas-webapp-kit",
+  "repository": "https://github.com/kagura-suzu/gas-webapp-kit",
+  "license": "MIT",
+  "keywords": [
+    "google-apps-script",
+    "gas",
+    "clasp",
+    "webapp",
+    "spreadsheet"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "GAS Webアプリ開発キット",
+    "shortDescription": "話しかけるだけでGASのWebアプリを作って公開",
+    "longDescription": "Googleのスプレッドシートとつながる業務用のWebアプリを、AIと話しながら作り、確認用の画面で確かめ、みんなが使う画面として公開するまでを案内します。ログインや許可などの操作は、アプリ内ブラウザで1つずつやさしく案内します。",
+    "developerName": "株式会社神楽鈴",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "GASでWebアプリを作りたい",
+      "作ったアプリを確認用の画面で確かめて",
+      "みんなが使う画面を新しくしたい"
+    ]
+  }
+}
